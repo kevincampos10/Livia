@@ -11,7 +11,7 @@
             font-family: 'Arial', sans-serif;
             background-color: #f28b8b;
             height: 100vh;
-            display: flex; 
+            display: flex; /* Centraliza TUDO na tela */
             justify-content: center;
             align-items: center;
             overflow: hidden;
@@ -22,9 +22,10 @@
             z-index: 10; 
         }
 
-        button {
+        /* --- ESTILOS DO BOTÃO --- */
+        #firstButton {
             padding: 15px 30px;
-            font-size: 18px;
+            font-size: 20px; /* Levemente maior */
             border: none;
             border-radius: 30px;
             cursor: pointer;
@@ -32,14 +33,16 @@
             color: #c0392b;
             font-weight: bold;
             transition: transform 0.1s, background-color 0.2s;
-            position: absolute;
+            /* CORREÇÃO: Removemos position: absolute para centralizar o botão */
+            position: relative; 
         }
 
-        button:hover {
+        #firstButton:hover {
             transform: scale(1.05);
             background-color: #ffe6e6;
         }
 
+        /* --- ESTILOS DA SURPRESA --- */
         #surprise {
             display: none; 
             max-width: 90%;
@@ -54,7 +57,6 @@
         }
 
         #surprise img {
-            /* AJUSTE: Diminui a foto para 80% da largura do contêiner */
             max-width: 80%; 
             border-radius: 15px;
             margin-bottom: 15px;
@@ -62,22 +64,23 @@
 
         h1 {
             color: #c0392b;
-            /* AJUSTE: Aumenta o tamanho da fonte do título */
-            font-size: 28px; 
+            /* AJUSTE: Aumenta mais o título */
+            font-size: 32px; 
         }
 
         p {
             color: #555;
-            /* AJUSTE: Aumenta o tamanho da fonte do parágrafo */
-            font-size: 18px; 
+            /* AJUSTE: Aumenta mais o parágrafo */
+            font-size: 20px; 
             text-align: center;
+            line-height: 1.5; /* Melhora a leitura do texto longo */
         }
     </style>
 </head>
 <body>
 
     <div class="container" id="firstScreen">
-        <button id="firstButton">CLIQUE AQUI</button>
+        <button id="firstButton">CLIQUE AQUI ❤️</button>
     </div>
 
     <div class="container" id="surprise">
@@ -93,20 +96,22 @@
         const firstButton = document.getElementById('firstButton');
         const surprise = document.getElementById('surprise');
         
+        // Função moveButtonRandom mantida, mas não é chamada no clique/mouseover.
         function moveButtonRandom() {
+            // Este código é mantido, mas não é mais executado para o teste.
             const x = Math.random() * (window.innerWidth - firstButton.offsetWidth);
             const y = Math.random() * (window.innerHeight - firstButton.offsetHeight);
             firstButton.style.left = x + 'px';
             firstButton.style.top = y + 'px';
         }
 
-        // Abertura com 1 clique para teste
+        // Lógica de revelação com 1 clique para teste
         firstButton.addEventListener('click', () => {
             firstScreen.style.display = 'none'; 
             surprise.style.display = 'flex'; 
         });
         
-        moveButtonRandom(); 
+        // Removemos a chamada inicial do moveButtonRandom e o evento mouseover para centralizar o botão.
     </script>
 
 </body>
