@@ -9,12 +9,13 @@
             margin: 0;
             padding: 0;
             font-family: 'Arial', sans-serif;
-            background-color: #f28b8b;
+            /* Fundo degradê */
+            background: linear-gradient(to top, #ff9a9e 0%, #fecfef 100%); 
             height: 100vh;
-            display: flex; /* Centraliza TUDO na tela */
+            display: flex; 
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            /* CORREÇÃO: Removemos 'overflow: hidden' para permitir a barra de rolagem */
         }
 
         .container {
@@ -44,11 +45,11 @@
 
         /* --- ESTILOS DA CONTAGEM REGRESSIVA --- */
         #countdown {
-            display: none; /* Começa escondido */
+            display: none;
             font-size: 100px;
             color: #ffffff;
             font-weight: bold;
-            text-shadow: 4px 4px #c0392b; /* Para destacar o número */
+            text-shadow: 4px 4px #c0392b;
             position: relative;
             z-index: 20;
         }
@@ -106,7 +107,7 @@
         const firstScreen = document.getElementById('firstScreen'); 
         const firstButton = document.getElementById('firstButton');
         const surprise = document.getElementById('surprise');
-        const countdownElement = document.getElementById('countdown'); // Referência para a contagem
+        const countdownElement = document.getElementById('countdown');
         let clickIndex = 0;
 
         const targetPositions = [
@@ -134,32 +135,28 @@
             if (clickIndex === targetPositions.length - 1) {
                 
                 // --- LÓGICA DA CONTAGEM REGRESSIVA ---
-                firstButton.style.display = 'none'; // 1. Oculta o botão
+                firstButton.style.display = 'none';
                 
-                countdownElement.style.display = 'flex'; // 2. Mostra a contagem
+                countdownElement.style.display = 'flex';
                 countdownElement.textContent = '3';
 
-                // Contagem 2
                 setTimeout(() => {
                     countdownElement.textContent = '2';
                 }, 1000);
 
-                // Contagem 1
                 setTimeout(() => {
                     countdownElement.textContent = '1';
                 }, 2000);
 
-                // Revela a surpresa após 3 segundos
                 setTimeout(() => {
-                    countdownElement.style.display = 'none'; // Esconde a contagem
-                    firstScreen.style.display = 'none'; // Garante que a tela do botão suma
-                    surprise.style.display = 'flex'; // Mostra a surpresa
+                    countdownElement.style.display = 'none';
+                    firstScreen.style.display = 'none';
+                    surprise.style.display = 'flex';
                 }, 3000);
 
-                firstButton.disabled = true; // Impede cliques posteriores
+                firstButton.disabled = true;
 
             } else {
-                // Move para o próximo alvo
                 clickIndex++;
                 moveToNextTarget();
             }
