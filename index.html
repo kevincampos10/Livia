@@ -120,35 +120,33 @@
             width: 100%;
             margin-top: 15px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-            gap: 40px; /* AUMENTO DO ESPAÇAMENTO ENTRE AS FOTOS */
+            /* AJUSTE: Maior minmax para 3 fotos ficarem grandes */
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 40px; 
             justify-items: center;
             align-items: start;
             padding-bottom: 20px;
         }
         
-        /* Contêiner individual de cada foto para posicionar o prego */
         .photo-item {
-            position: relative; /* CRÍTICO: Ponto de referência para o prego */
-            width: 100%; /* Ocupa o espaço da grid */
+            position: relative;
+            width: 100%;
         }
         
-        /* Estilo do preguinho usando pseudoelemento */
         .photo-item::before {
-            content: ''; /* Conteúdo vazio para o prego */
+            content: '';
             position: absolute;
-            top: -10px; /* Posição acima da foto */
+            top: -10px;
             left: 50%;
             transform: translateX(-50%);
             width: 15px; 
             height: 15px;
-            background-color: #333; /* Cor do prego/percevejo */
-            border-radius: 50%; /* Formato circular */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4); /* Sombra para dar profundidade */
+            background-color: #333;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
             z-index: 10;
         }
 
-        /* Estilo da imagem dentro do item */
         .photo-item img {
             width: 100%; 
             height: auto;
@@ -181,6 +179,26 @@
             margin-top: 0;
             margin-bottom: 20px;
         }
+
+        /* NOVO ESTILO: Botão para a próxima página */
+        #nextPageButton {
+            margin-top: 30px;
+            padding: 15px 30px;
+            font-size: 20px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            background-color: #ffffff;
+            color: #c0392b;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.1s;
+        }
+        #nextPageButton:hover {
+            transform: scale(1.05);
+            background-color: #ffe6e6;
+        }
     </style>
 </head>
 <body>
@@ -205,9 +223,9 @@
             <div class="photo-item"><img src="foto.jpg" alt="Foto 1"></div>
             <div class="photo-item"><img src="foto2.jpg" alt="Foto 2"></div>
             <div class="photo-item"><img src="foto3.jpg" alt="Foto 3"></div>
-            <div class="photo-item"><img src="foto4.jpg" alt="Foto 4"></div>
-            <div class="photo-item"><img src="foto5.jpg" alt="Foto 5"></div>
-            </div>
+        </div>
+        
+        <a href="page2.html" id="nextPageButton">CLIQUE PARA VER MAIS ➡️</a>
         
     </div>
 
@@ -278,12 +296,13 @@
             }, 3000);
         }
 
-        // Se você quiser que cada foto tenha uma rotação ligeiramente diferente (opcional)
-        document.querySelectorAll('.photo-item img').forEach(img => {
-            const randomRotation = Math.random() * 8 - 4; // Entre -4 e +4 graus
-            img.style.transform = `rotate(${randomRotation}deg)`;
+        // Script de rotação aleatória para as 3 fotos
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.photo-item img').forEach(img => {
+                const randomRotation = Math.random() * 8 - 4;
+                img.style.transform = `rotate(${randomRotation}deg)`;
+            });
         });
-
     </script>
 
 </body>
