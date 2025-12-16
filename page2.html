@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Para Lívia ❤️ - Mais Fotos</title>
+    <title>Para Lívia ❤️ - Fim da Surpresa</title>
     <style>
         body {
             margin: 0;
@@ -16,9 +16,10 @@
             align-items: center;
             flex-direction: column;
             text-align: center;
+            overflow: hidden; /* CRÍTICO: Esconde a barra de rolagem e permite que os fogos cubram a tela */
         }
 
-        /* O player de música deve ficar escondido, mas precisa existir para tocar */
+        /* O player de música deve ficar escondido */
         #music-player {
             position: absolute;
             top: 0;
@@ -89,10 +90,13 @@
             transition: transform 0.3s;
         }
 
+        /* NOVO ESTILO: Título Grande com a Nova Mensagem */
         h2 {
             color: #c0392b;
-            font-size: 30px;
-            margin-bottom: 15px;
+            font-size: 48px; /* Aumentado para destacar */
+            margin-bottom: 30px;
+            font-weight: bold;
+            text-shadow: 2px 2px #fff;
         }
 
         #finalButton {
@@ -113,10 +117,53 @@
             transform: scale(1.05);
             background-color: #ffe6e6;
         }
+
+        /* ------------------------------------- */
+        /* --- EFEITO FOGOS DE ARTIFÍCIO (CSS) --- */
+        /* ------------------------------------- */
+
+        .firework {
+          position: absolute;
+          width: 5px;
+          height: 5px;
+          background: #fff;
+          border-radius: 50%;
+          opacity: 0;
+          animation: boom 3s ease-out infinite;
+          z-index: 1; /* Garante que fique atrás do conteúdo */
+        }
+
+        @keyframes boom {
+          0% {
+            transform: scale(0);
+            opacity: 0;
+          }
+          10% {
+            transform: scale(1);
+            opacity: 1;
+          }
+          100% {
+            transform: scale(50);
+            opacity: 0;
+          }
+        }
+
+        /* Posicionamento dos Fogos de Artifício */
+        .firework:nth-child(1) { top: 20%; left: 15%; animation-delay: 0s; background: #ff4d4d; }
+        .firework:nth-child(2) { top: 70%; left: 85%; animation-delay: 1s; background: #ffff00; }
+        .firework:nth-child(3) { top: 50%; left: 50%; animation-delay: 2s; background: #00ffaa; }
+        .firework:nth-child(4) { top: 80%; left: 30%; animation-delay: 0.5s; background: #ff00ff; }
+        .firework:nth-child(5) { top: 30%; left: 75%; animation-delay: 1.5s; background: #00ffff; }
+        /* ------------------------------------- */
     </style>
 </head>
 <body>
 
+    <div class="firework"></div>
+    <div class="firework"></div>
+    <div class="firework"></div>
+    <div class="firework"></div>
+    <div class="firework"></div>
     <div id="music-player">
         <iframe 
             width="1" height="1" 
@@ -126,16 +173,17 @@
             allowfullscreen>
         </iframe>
     </div>
+
     <div id="surprise2"> 
         
-        <h2>Ainda há mais amor! 💕</h2>
+        <h2>OBRIGADO POR ESTAR NA MINHA VIDA ❤️</h2>
 
         <div id="photo-grid2">
             <div class="photo-item"><img src="foto4.jpg" alt="Foto 4"></div>
             <div class="photo-item"><img src="foto5.jpg" alt="Foto 5"></div>
         </div>
         
-        <a href="https://www.youtube.com/watch?v=VWRkQARH-9o" target="_blank" id="finalButton">FIM DA SURPRESA ❤️</a>
+        <a href="https://www.youtube.com/watch?v=VWRkQARH-9o" target="_blank" id="finalButton">VER MÚSICA NO YOUTUBE</a>
         
     </div>
     
@@ -147,11 +195,6 @@
                 img.style.transform = `rotate(${randomRotation}deg)`;
             });
         });
-
-        // DICA: Em alguns navegadores modernos (Chrome/Edge), o autoplay só funciona 
-        // se o usuário já tiver interagido com a página (o que acontece ao clicar 
-        // no botão da página anterior). Se não funcionar, o usuário pode clicar
-        // no botão "FIM DA SURPRESA" para abrir o vídeo diretamente.
     </script>
 
 </body>
