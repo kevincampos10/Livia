@@ -33,7 +33,8 @@
             color: #c0392b;
             font-weight: bold;
             transition: transform 0.1s, background-color 0.2s;
-            position: absolute;
+            /* O botão usa posição absoluta para poder ser movido inicialmente */
+            position: absolute; 
         }
 
         button:hover {
@@ -90,38 +91,26 @@
         const firstScreen = document.getElementById('firstScreen'); 
         const firstButton = document.getElementById('firstButton');
         const surprise = document.getElementById('surprise');
-        let clicks = 0;
-
-        // Função para mover o botão para uma posição aleatória
+        
+        // Função para posicionar o botão (será executada apenas uma vez para o posicionamento inicial)
         function moveButtonRandom() {
-            // Garante que o botão não saia da tela
             const x = Math.random() * (window.innerWidth - firstButton.offsetWidth);
             const y = Math.random() * (window.innerHeight - firstButton.offsetHeight);
             firstButton.style.left = x + 'px';
             firstButton.style.top = y + 'px';
         }
 
-        // Faz o botão fugir quando o mouse passa por cima
-        firstButton.addEventListener('mouseover', () => {
-            moveButtonRandom();
-        });
-
-        // Lógica de contagem e revelação da surpresa
+        // Lógica de revelação da surpresa (APENAS UM CLIQUE)
         firstButton.addEventListener('click', () => {
-            clicks++;
-            if (clicks < 5) {
-                // Move o botão rapidamente mais 3 vezes para dificultar
-                for (let i = 0; i < 3; i++) {
-                    setTimeout(moveButtonRandom, Math.random() * 100);
-                }
-            } else {
-                // AÇÃO FINAL: Esconde a tela inteira do botão e revela a surpresa centralizada
-                firstScreen.style.display = 'none'; 
-                surprise.style.display = 'flex'; 
-            }
+            // AÇÃO FINAL: Esconde a tela inteira do botão e revela a surpresa centralizada
+            firstScreen.style.display = 'none'; 
+            surprise.style.display = 'flex'; 
         });
+        
+        // **REMOVIDO**: A função de 'fugir' ao passar o mouse foi removida.
+        // **MODIFICADO**: A lógica de 5 cliques foi substituída por 1 clique.
 
-        // Chama a função uma vez para posicionar o botão inicialmente
+        // Chama a função uma vez para posicionar o botão em algum lugar aleatório (e não no canto)
         moveButtonRandom(); 
     </script>
 
