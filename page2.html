@@ -9,7 +9,6 @@
             margin: 0;
             padding: 0;
             font-family: 'Arial', sans-serif;
-            /* Mantém o mesmo fundo da primeira página */
             background: linear-gradient(to top, #ff9a9e 0%, #fecfef 100%); 
             height: 100vh;
             display: flex; 
@@ -19,6 +18,18 @@
             text-align: center;
         }
 
+        /* O player de música deve ficar escondido, mas precisa existir para tocar */
+        #music-player {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            opacity: 0;
+            z-index: -10;
+        }
+        
         #surprise2 {
             max-width: 95%; 
             max-height: 95vh;
@@ -34,14 +45,12 @@
             justify-content: flex-start;
         }
 
-        /* Estilo para as fotos restantes (apenas 2 ou 3) */
         #photo-grid2 {
             width: 100%;
             margin-top: 25px;
             padding-bottom: 20px;
             
             display: grid;
-            /* Centraliza 2-3 fotos grandes */
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
             gap: 40px; 
             justify-items: center;
@@ -86,7 +95,6 @@
             margin-bottom: 15px;
         }
 
-        /* Estilo para o botão de voltar/concluir (se necessário) */
         #finalButton {
             margin-top: 30px;
             padding: 15px 30px;
@@ -99,20 +107,25 @@
             font-weight: bold;
             text-decoration: none;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.1s;
         }
-
-        /* Se quiser que cada foto tenha uma rotação diferente */
-        /* Script de rotação aleatória para page2 */
-        window.addEventListener('load', () => {
-            document.querySelectorAll('.photo-item img').forEach(img => {
-                const randomRotation = Math.random() * 8 - 4; // Entre -4 e +4 graus
-                img.style.transform = `rotate(${randomRotation}deg)`;
-            });
-        });
+        #finalButton:hover {
+            transform: scale(1.05);
+            background-color: #ffe6e6;
+        }
     </style>
 </head>
 <body>
 
+    <div id="music-player">
+        <iframe 
+            width="1" height="1" 
+            src="https://www.youtube.com/embed/VWRkQARH-9o?autoplay=1&loop=1&playlist=VWRkQARH-9o" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+        </iframe>
+    </div>
     <div id="surprise2"> 
         
         <h2>Ainda há mais amor! 💕</h2>
@@ -120,12 +133,26 @@
         <div id="photo-grid2">
             <div class="photo-item"><img src="foto4.jpg" alt="Foto 4"></div>
             <div class="photo-item"><img src="foto5.jpg" alt="Foto 5"></div>
-            
         </div>
         
-        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" id="finalButton">FIM DA SURPRESA ❤️</a>
+        <a href="https://www.youtube.com/watch?v=VWRkQARH-9o" target="_blank" id="finalButton">FIM DA SURPRESA ❤️</a>
         
     </div>
+    
+    <script>
+        // Script de rotação aleatória para page2
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.photo-item img').forEach(img => {
+                const randomRotation = Math.random() * 8 - 4;
+                img.style.transform = `rotate(${randomRotation}deg)`;
+            });
+        });
+
+        // DICA: Em alguns navegadores modernos (Chrome/Edge), o autoplay só funciona 
+        // se o usuário já tiver interagido com a página (o que acontece ao clicar 
+        // no botão da página anterior). Se não funcionar, o usuário pode clicar
+        // no botão "FIM DA SURPRESA" para abrir o vídeo diretamente.
+    </script>
 
 </body>
 </html>
