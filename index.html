@@ -16,7 +16,7 @@
             align-items: center;
         }
 
-        /* --- ESTILOS DA TELA INICIAL --- */
+        /* --- ESTILOS DA TELA INICIAL (SEM ALTERAÇÃO) --- */
         #firstScreen {
             position: absolute; 
             top: 0;
@@ -45,7 +45,7 @@
             background-color: #ffe6e6;
         }
 
-        /* --- ESTILOS DA CONTAGEM REGRESSIVA --- */
+        /* --- ESTILOS DA CONTAGEM REGRESSIVA (SEM ALTERAÇÃO) --- */
         #countdown {
             display: none;
             font-size: 100px;
@@ -56,56 +56,65 @@
             z-index: 20;
         }
 
-        /* --- ESTILOS DA SURPRESA (MURAL DE FOTOS - CORREÇÃO DE OCULTAÇÃO) --- */
+        /* --- ESTILOS DA SURPRESA (NOVO LAYOUT) --- */
         #surprise {
-            /* CORREÇÃO: Usamos visibility/opacity para garantir que ela não seja renderizada no início */
             visibility: hidden;
             opacity: 0;
-            transition: opacity 0.5s; /* Adiciona uma transição suave ao aparecer */
+            transition: opacity 0.5s;
             
-            position: absolute; /* Ocupa a área central do body */
+            position: absolute;
             max-width: 95%; 
             max-height: 95vh;
             background-color: rgba(255, 255, 255, 0.9);
             padding: 20px;
             border-radius: 20px;
             overflow-y: auto; 
-            z-index: 5; 
+            z-index: 5;
+            
+            /* Novo: Organiza Texto e Fotos verticalmente no topo */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        
+        /* NOVO ESTILO: Contêiner que SÓ CONTÉM AS FOTOS e usa GRID */
+        #photo-grid {
+            width: 100%; /* Ocupa a largura máxima dentro do #surprise */
+            margin-top: 15px;
             
             /* CSS para o Mural: Fotos em colunas */
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Reduz o minmax para caber mais fotos */
+            /* AJUSTE: O minmax foi aumentado para forçar fotos maiores */
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
             gap: 10px; 
             justify-items: center;
             align-items: start;
         }
-
-        .text-container {
-            grid-column: 1 / -1; 
-            text-align: center;
-            padding-bottom: 10px;
-        }
         
-        #surprise img {
-            width: 100%; 
-            height: auto;
-            border-radius: 8px;
-            object-fit: cover; 
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
+        /* O text-container agora é desnecessário pois o Flexbox faz o trabalho */
+        #surprise h1 {
             color: #c0392b;
             font-size: 36px; 
             margin-bottom: 5px;
+            text-align: center;
         }
 
-        p {
+        #surprise p {
             color: #555;
             font-size: 22px; 
             text-align: center;
             line-height: 1.5;
             margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        #photo-grid img {
+            width: 100%; 
+            height: auto;
+            border-radius: 8px;
+            object-fit: cover; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
@@ -119,18 +128,18 @@
 
     <div id="surprise"> 
         
-        <div class="text-container">
-            <h1>Para Lívia Rodrigues ❤️</h1>
-            <p>
-                Meu amor, você é uma mulher incrível e eu sou seu fã. Te amo meu amor e obrigado por fazer minha vida ter mais sentido.
-            </p>
-        </div>
+        <h1>Para Lívia Rodrigues ❤️</h1>
+        <p>
+            Meu amor, você é uma mulher incrível e eu sou seu fã. Te amo meu amor e obrigado por fazer minha vida ter mais sentido.
+        </p>
 
-        <img src="foto.jpg" alt="Foto 1">
-        <img src="foto2.jpg" alt="Foto 2">
-        <img src="foto3.jpg" alt="Foto 3">
-        <img src="foto4.jpg" alt="Foto 4">
-        <img src="foto5.jpg" alt="Foto 5">
+        <div id="photo-grid">
+            <img src="foto.jpg" alt="Foto 1">
+            <img src="foto2.jpg" alt="Foto 2">
+            <img src="foto3.jpg" alt="Foto 3">
+            <img src="foto4.jpg" alt="Foto 4">
+            <img src="foto5.jpg" alt="Foto 5">
+            </div>
         
     </div>
 
@@ -179,14 +188,14 @@
                     countdownElement.textContent = '1';
                 }, 2000);
 
-                // REVELAÇÃO DA SURPRESA: Ativa a visibilidade e a opacidade
+                // REVELAÇÃO DA SURPRESA
                 setTimeout(() => {
                     countdownElement.style.display = 'none';
                     firstScreen.style.display = 'none';
                     
-                    surprise.style.visibility = 'visible'; // Torna visível
-                    surprise.style.opacity = '1';         // Transiciona para totalmente opaco
-                    // O display: grid já está aplicado no CSS.
+                    surprise.style.visibility = 'visible'; 
+                    surprise.style.opacity = '1';         
+                    
                 }, 3000);
 
                 firstButton.disabled = true;
