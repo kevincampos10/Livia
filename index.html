@@ -16,7 +16,7 @@
             align-items: center;
         }
 
-        /* --- ESTILOS DA TELA INICIAL (SEM ALTERAÇÃO) --- */
+        /* --- ESTILOS DA TELA INICIAL (LOVE BAR) --- */
         #firstScreen {
             position: absolute; 
             top: 0;
@@ -24,25 +24,43 @@
             width: 100%;
             height: 100%;
             z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
         }
 
-        #firstButton {
-            padding: 15px 30px;
-            font-size: 20px;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            background-color: #ffffff;
+        #instruction {
             color: #c0392b;
+            font-size: 26px;
             font-weight: bold;
-            transition: transform 0.2s; 
-            position: absolute; 
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
+            margin-bottom: 30px;
         }
 
-        #firstButton:hover {
-            transform: scale(1.05);
-            background-color: #ffe6e6;
+        #loveBarContainer {
+            width: 80%;
+            max-width: 500px;
+            height: 40px;
+            background-color: #ffffff;
+            border-radius: 20px;
+            border: 3px solid #c0392b;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        #loveBar {
+            height: 100%;
+            width: 0%; /* Começa vazia */
+            background-color: #ff4d4d;
+            transition: width 0.1s linear; /* Anima o enchimento */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            color: white;
+            font-weight: bold;
         }
 
         /* --- ESTILOS DA CONTAGEM REGRESSIVA (SEM ALTERAÇÃO) --- */
@@ -56,13 +74,12 @@
             z-index: 20;
         }
 
-        /* --- ESTILOS DA SURPRESA (NOVO LAYOUT) --- */
+        /* --- ESTILOS DA SURPRESA (MURAL DE FOTOS - SEM ALTERAÇÃO) --- */
         #surprise {
             visibility: hidden;
             opacity: 0;
             transition: opacity 0.5s;
-            
-            position: absolute;
+            position: absolute; 
             max-width: 95%; 
             max-height: 95vh;
             background-color: rgba(255, 255, 255, 0.9);
@@ -70,29 +87,22 @@
             border-radius: 20px;
             overflow-y: auto; 
             z-index: 5;
-            
-            /* Novo: Organiza Texto e Fotos verticalmente no topo */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
         }
-        
-        /* NOVO ESTILO: Contêiner que SÓ CONTÉM AS FOTOS e usa GRID */
+
         #photo-grid {
-            width: 100%; /* Ocupa a largura máxima dentro do #surprise */
+            width: 100%;
             margin-top: 15px;
-            
-            /* CSS para o Mural: Fotos em colunas */
             display: grid;
-            /* AJUSTE: O minmax foi aumentado para forçar fotos maiores */
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
             gap: 10px; 
             justify-items: center;
             align-items: start;
         }
         
-        /* O text-container agora é desnecessário pois o Flexbox faz o trabalho */
         #surprise h1 {
             color: #c0392b;
             font-size: 36px; 
@@ -108,7 +118,7 @@
             margin-top: 0;
             margin-bottom: 20px;
         }
-
+        
         #photo-grid img {
             width: 100%; 
             height: auto;
@@ -121,95 +131,87 @@
 <body>
 
     <div id="firstScreen">
-        <button id="firstButton">CLIQUE AQUI ❤️</button>
+        <div id="instruction">Pressione a barra de espaço para encher a barra do amor!</div>
+        <div id="loveBarContainer">
+            <div id="loveBar">0%</div>
+        </div>
     </div>
 
     <div id="countdown"></div>
 
     <div id="surprise"> 
-        
         <h1>Para Lívia Rodrigues ❤️</h1>
         <p>
             Meu amor, você é uma mulher incrível e eu sou seu fã. Te amo meu amor e obrigado por fazer minha vida ter mais sentido.
         </p>
-
         <div id="photo-grid">
             <img src="foto.jpg" alt="Foto 1">
             <img src="foto2.jpg" alt="Foto 2">
             <img src="foto3.jpg" alt="Foto 3">
             <img src="foto4.jpg" alt="Foto 4">
             <img src="foto5.jpg" alt="Foto 5">
-            </div>
-        
+        </div>
     </div>
 
     <script>
         const firstScreen = document.getElementById('firstScreen'); 
-        const firstButton = document.getElementById('firstButton');
         const surprise = document.getElementById('surprise');
         const countdownElement = document.getElementById('countdown');
-        let clickIndex = 0;
+        const loveBar = document.getElementById('loveBar');
 
-        const targetPositions = [
-            { x: 20, y: 20 },
-            { x: 75, y: 40 }, 
-            { x: 50, y: 50 }, 
-            { x: 30, y: 80 }, 
-            { x: 80, y: 15 }  
-        ];
+        let loveLevel = 0; // Nível atual do amor
+        const maxLove = 20; // Número de vezes que precisa apertar ESPAÇO
 
-        function moveToNextTarget() {
-            if (clickIndex < targetPositions.length) {
-                const target = targetPositions[clickIndex];
-                
-                const newX = (window.innerWidth * target.x / 100) - (firstButton.offsetWidth / 2);
-                const newY = (window.innerHeight * target.y / 100) - (firstButton.offsetHeight / 2);
+        // Variável para evitar que a contagem seja acionada várias vezes
+        let gameActive = true; 
 
-                firstButton.style.left = newX + 'px';
-                firstButton.style.top = newY + 'px';
+        // Lógica de interação com o teclado
+        document.addEventListener('keydown', (event) => {
+            // Verifica se a tecla é o ESPAÇO (keyCode 32 ou key ' ') e se o jogo está ativo
+            if (gameActive && (event.keyCode === 32 || event.key === ' ')) {
+                event.preventDefault(); // Impede que o espaço role a página
+
+                if (loveLevel < maxLove) {
+                    loveLevel++;
+                    const percentage = Math.round((loveLevel / maxLove) * 100);
+                    
+                    // Atualiza a barra visual
+                    loveBar.style.width = percentage + '%';
+                    loveBar.textContent = percentage + '%';
+                }
+
+                if (loveLevel >= maxLove) {
+                    gameActive = false; // Desativa o jogo após a barra encher
+                    startCountdown();
+                }
             }
-        }
+        });
 
-        firstButton.addEventListener('click', () => {
+        // Função de Contagem Regressiva e Revelação (Sem alterações)
+        function startCountdown() {
             
-            if (clickIndex === targetPositions.length - 1) {
+            // Lógica de Transição
+            firstScreen.style.display = 'none';
+            
+            countdownElement.style.display = 'flex';
+            countdownElement.textContent = '3';
+
+            setTimeout(() => {
+                countdownElement.textContent = '2';
+            }, 1000);
+
+            setTimeout(() => {
+                countdownElement.textContent = '1';
+            }, 2000);
+
+            // REVELAÇÃO DA SURPRESA
+            setTimeout(() => {
+                countdownElement.style.display = 'none';
                 
-                // Lógica de Transição
-                firstButton.style.display = 'none';
-                
-                countdownElement.style.display = 'flex';
-                countdownElement.textContent = '3';
-
-                setTimeout(() => {
-                    countdownElement.textContent = '2';
-                }, 1000);
-
-                setTimeout(() => {
-                    countdownElement.textContent = '1';
-                }, 2000);
-
-                // REVELAÇÃO DA SURPRESA
-                setTimeout(() => {
-                    countdownElement.style.display = 'none';
-                    firstScreen.style.display = 'none';
-                    
-                    surprise.style.visibility = 'visible'; 
-                    surprise.style.opacity = '1';         
-                    
-                }, 3000);
-
-                firstButton.disabled = true;
-
-            } else {
-                clickIndex++;
-                moveToNextTarget();
-            }
-        });
-
-        window.addEventListener('load', () => {
-            moveToNextTarget();
-        });
-        
+                surprise.style.visibility = 'visible'; 
+                surprise.style.opacity = '1';         
+            }, 3000);
+        }
     </script>
 
 </body>
