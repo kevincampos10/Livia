@@ -11,7 +11,7 @@
             font-family: 'Arial', sans-serif;
             background-color: #f28b8b;
             height: 100vh;
-            display: flex; /* Centraliza TUDO na tela */
+            display: flex; 
             justify-content: center;
             align-items: center;
             overflow: hidden;
@@ -19,7 +19,6 @@
 
         .container {
             text-align: center;
-            /* Garantimos que esta div fique na frente de tudo que for absoluto */
             z-index: 10; 
         }
 
@@ -33,8 +32,7 @@
             color: #c0392b;
             font-weight: bold;
             transition: transform 0.1s, background-color 0.2s;
-            /* O botão usa posição absoluta para poder ser movido inicialmente */
-            position: absolute; 
+            position: absolute;
         }
 
         button:hover {
@@ -43,32 +41,36 @@
         }
 
         #surprise {
-            display: none; /* Começa escondido */
+            display: none; 
             max-width: 90%;
             background-color: rgba(255, 255, 255, 0.9);
             padding: 20px;
             border-radius: 20px;
             position: relative;
             
-            /* Garante que o conteúdo DENTRO da surpresa seja centralizado */
             flex-direction: column; 
             justify-content: center;
             align-items: center;
         }
 
         #surprise img {
-            max-width: 100%;
+            /* AJUSTE: Diminui a foto para 80% da largura do contêiner */
+            max-width: 80%; 
             border-radius: 15px;
             margin-bottom: 15px;
         }
 
         h1 {
             color: #c0392b;
+            /* AJUSTE: Aumenta o tamanho da fonte do título */
+            font-size: 28px; 
         }
 
         p {
             color: #555;
-            font-size: 16px;
+            /* AJUSTE: Aumenta o tamanho da fonte do parágrafo */
+            font-size: 18px; 
+            text-align: center;
         }
     </style>
 </head>
@@ -87,12 +89,10 @@
     </div>
 
     <script>
-        // Define as referências para os elementos
         const firstScreen = document.getElementById('firstScreen'); 
         const firstButton = document.getElementById('firstButton');
         const surprise = document.getElementById('surprise');
         
-        // Função para posicionar o botão (será executada apenas uma vez para o posicionamento inicial)
         function moveButtonRandom() {
             const x = Math.random() * (window.innerWidth - firstButton.offsetWidth);
             const y = Math.random() * (window.innerHeight - firstButton.offsetHeight);
@@ -100,17 +100,12 @@
             firstButton.style.top = y + 'px';
         }
 
-        // Lógica de revelação da surpresa (APENAS UM CLIQUE)
+        // Abertura com 1 clique para teste
         firstButton.addEventListener('click', () => {
-            // AÇÃO FINAL: Esconde a tela inteira do botão e revela a surpresa centralizada
             firstScreen.style.display = 'none'; 
             surprise.style.display = 'flex'; 
         });
         
-        // **REMOVIDO**: A função de 'fugir' ao passar o mouse foi removida.
-        // **MODIFICADO**: A lógica de 5 cliques foi substituída por 1 clique.
-
-        // Chama a função uma vez para posicionar o botão em algum lugar aleatório (e não no canto)
         moveButtonRandom(); 
     </script>
 
