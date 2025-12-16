@@ -25,7 +25,7 @@
         /* --- ESTILOS DO BOTÃO --- */
         #firstButton {
             padding: 15px 30px;
-            font-size: 20px; /* Levemente maior */
+            font-size: 20px;
             border: none;
             border-radius: 30px;
             cursor: pointer;
@@ -33,7 +33,6 @@
             color: #c0392b;
             font-weight: bold;
             transition: transform 0.1s, background-color 0.2s;
-            /* CORREÇÃO: Removemos position: absolute para centralizar o botão */
             position: relative; 
         }
 
@@ -64,16 +63,16 @@
 
         h1 {
             color: #c0392b;
-            /* AJUSTE: Aumenta mais o título */
-            font-size: 32px; 
+            /* AJUSTE: Aumenta o título para 36px */
+            font-size: 36px; 
         }
 
         p {
             color: #555;
-            /* AJUSTE: Aumenta mais o parágrafo */
-            font-size: 20px; 
+            /* AJUSTE: Aumenta o parágrafo para 22px */
+            font-size: 22px; 
             text-align: center;
-            line-height: 1.5; /* Melhora a leitura do texto longo */
+            line-height: 1.5;
         }
     </style>
 </head>
@@ -96,9 +95,7 @@
         const firstButton = document.getElementById('firstButton');
         const surprise = document.getElementById('surprise');
         
-        // Função moveButtonRandom mantida, mas não é chamada no clique/mouseover.
         function moveButtonRandom() {
-            // Este código é mantido, mas não é mais executado para o teste.
             const x = Math.random() * (window.innerWidth - firstButton.offsetWidth);
             const y = Math.random() * (window.innerHeight - firstButton.offsetHeight);
             firstButton.style.left = x + 'px';
@@ -111,7 +108,7 @@
             surprise.style.display = 'flex'; 
         });
         
-        // Removemos a chamada inicial do moveButtonRandom e o evento mouseover para centralizar o botão.
+        moveButtonRandom(); 
     </script>
 
 </body>
