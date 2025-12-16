@@ -120,7 +120,6 @@
             width: 100%;
             margin-top: 15px;
             display: grid;
-            /* AJUSTE: Maior minmax para 3 fotos ficarem grandes */
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
             gap: 40px; 
             justify-items: center;
@@ -180,24 +179,19 @@
             margin-bottom: 20px;
         }
 
-        /* NOVO ESTILO: Botão para a próxima página */
-        #nextPageButton {
+        /* NOVO ESTILO: Dica para continuar, pulsando */
+        #continueHint {
             margin-top: 30px;
-            padding: 15px 30px;
             font-size: 20px;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            background-color: #ffffff;
             color: #c0392b;
             font-weight: bold;
-            text-decoration: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            transition: transform 0.1s;
+            animation: pulse 1.5s infinite; 
         }
-        #nextPageButton:hover {
-            transform: scale(1.05);
-            background-color: #ffe6e6;
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
         }
     </style>
 </head>
@@ -225,7 +219,7 @@
             <div class="photo-item"><img src="foto3.jpg" alt="Foto 3"></div>
         </div>
         
-        <a href="page2.html" id="nextPageButton">CLIQUE PARA VER MAIS ➡️</a>
+        <div id="continueHint">Pressione a barra de espaço para a surpresa final...</div>
         
     </div>
 
@@ -239,6 +233,7 @@
         let loveLevel = 0; 
         const maxLove = 20; 
         let gameActive = true; 
+        let surpriseRevealed = false; // NOVA VARIÁVEL para controlar se a surpresa já está na tela
 
         function createHeart() {
             const heart = document.createElement('div');
@@ -256,22 +251,29 @@
         }
 
         document.addEventListener('keydown', (event) => {
-            if (gameActive && (event.keyCode === 32 || event.key === ' ')) {
+            // Verifica se a tecla é o ESPAÇO
+            if (event.keyCode === 32 || event.key === ' ') {
                 event.preventDefault(); 
 
-                if (loveLevel < maxLove) {
-                    loveLevel++;
-                    const percentage = Math.round((loveLevel / maxLove) * 100);
-                    
-                    loveBar.style.width = percentage + '%';
-                    loveBar.textContent = percentage + '%';
+                if (gameActive) {
+                    // Lógica para ENCHER A BARRA
+                    if (loveLevel < maxLove) {
+                        loveLevel++;
+                        const percentage = Math.round((loveLevel / maxLove) * 100);
+                        
+                        loveBar.style.width = percentage + '%';
+                        loveBar.textContent = percentage + '%';
 
-                    createHeart(); 
-                }
+                        createHeart(); 
+                    }
 
-                if (loveLevel >= maxLove) {
-                    gameActive = false; 
-                    startCountdown();
+                    if (loveLevel >= maxLove) {
+                        gameActive = false; 
+                        startCountdown();
+                    }
+                } else if (surpriseRevealed) {
+                    // Lógica para AVANÇAR DE PÁGINA
+                    window.location.href = 'page2.html';
                 }
             }
         });
@@ -292,16 +294,16 @@
             setTimeout(() => {
                 countdownElement.style.display = 'none';
                 surprise.style.visibility = 'visible'; 
-                surprise.style.opacity = '1';         
+                surprise.style.opacity = '1'; 
+                
+                surpriseRevealed = true; // Define que a surpresa foi revelada, permitindo a transição
             }, 3000);
         }
 
-        // Script de rotação aleatória para as 3 fotos
-        window.addEventListener('load', () => {
-            document.querySelectorAll('.photo-item img').forEach(img => {
-                const randomRotation = Math.random() * 8 - 4;
-                img.style.transform = `rotate(${randomRotation}deg)`;
-            });
+        // Script de rotação aleatória
+        document.querySelectorAll('.photo-item img').forEach(img => {
+            const randomRotation = Math.random() * 8 - 4;
+            img.style.transform = `rotate(${randomRotation}deg)`;
         });
     </script>
 
