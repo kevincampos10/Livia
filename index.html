@@ -11,7 +11,7 @@
             font-family: 'Arial', sans-serif;
             background-color: #f28b8b;
             height: 100vh;
-            display: flex;
+            display: flex; /* Centraliza TUDO na tela */
             justify-content: center;
             align-items: center;
             overflow: hidden;
@@ -32,17 +32,25 @@
             background-color: #ffffff;
             color: #c0392b;
             font-weight: bold;
-            transition: transform 0.2s; /* Transição suave para a nova posição */
-            /* Precisa ser absolute para ser movido para as posições programadas */
+            transition: transform 0.2s; 
             position: absolute; 
-            
-            /* DICA: Adicionar um box-shadow pode ajudar a ver melhor o botão */
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
         }
 
         #firstButton:hover {
             transform: scale(1.05);
             background-color: #ffe6e6;
+        }
+
+        /* --- ESTILOS DA CONTAGEM REGRESSIVA --- */
+        #countdown {
+            display: none; /* Começa escondido */
+            font-size: 100px;
+            color: #ffffff;
+            font-weight: bold;
+            text-shadow: 4px 4px #c0392b; /* Para destacar o número */
+            position: relative;
+            z-index: 20;
         }
 
         /* --- ESTILOS DA SURPRESA --- */
@@ -84,6 +92,8 @@
         <button id="firstButton">CLIQUE AQUI ❤️</button>
     </div>
 
+    <div id="countdown"></div>
+
     <div class="container" id="surprise">
         <h1>Para Lívia Rodrigues ❤️</h1>
         <img src="foto.jpg" alt="Nossa foto">
@@ -96,30 +106,21 @@
         const firstScreen = document.getElementById('firstScreen'); 
         const firstButton = document.getElementById('firstButton');
         const surprise = document.getElementById('surprise');
-        let clickIndex = 0; // Contador de cliques que também serve como índice da posição
+        const countdownElement = document.getElementById('countdown'); // Referência para a contagem
+        let clickIndex = 0;
 
-        // 1. DEFINIÇÃO DOS 5 ALVOS (X e Y em porcentagem da tela)
-        // Você pode ajustar estes valores (0 a 100) para escolher onde o botão vai aparecer.
-        // O último ponto será o que revela a surpresa.
         const targetPositions = [
-            // Posição 1: Topo Esquerda (20% de cada lado)
             { x: 20, y: 20 },
-            // Posição 2: Meio Direita (75% da largura, 40% da altura)
             { x: 75, y: 40 }, 
-            // Posição 3: Centro-Centro (50% da largura, 50% da altura)
             { x: 50, y: 50 }, 
-            // Posição 4: Baixo Esquerda (30% da largura, 80% da altura)
             { x: 30, y: 80 }, 
-            // Posição 5 (Final): Topo Direita (80% da largura, 15% da altura)
             { x: 80, y: 15 }  
         ];
 
-        // Função para mover o botão para a próxima posição na lista
         function moveToNextTarget() {
             if (clickIndex < targetPositions.length) {
                 const target = targetPositions[clickIndex];
                 
-                // Mapeia porcentagem para pixels da janela
                 const newX = (window.innerWidth * target.x / 100) - (firstButton.offsetWidth / 2);
                 const newY = (window.innerHeight * target.y / 100) - (firstButton.offsetHeight / 2);
 
@@ -128,16 +129,35 @@
             }
         }
 
-        // Lógica de contagem e revelação da surpresa
         firstButton.addEventListener('click', () => {
             
-            // Se o clique atual é o último (o que abre a surpresa)
             if (clickIndex === targetPositions.length - 1) {
-                // Revela a surpresa
-                firstScreen.style.display = 'none'; 
-                surprise.style.display = 'flex'; 
-                // Impede cliques posteriores
-                firstButton.disabled = true; 
+                
+                // --- LÓGICA DA CONTAGEM REGRESSIVA ---
+                firstButton.style.display = 'none'; // 1. Oculta o botão
+                
+                countdownElement.style.display = 'flex'; // 2. Mostra a contagem
+                countdownElement.textContent = '3';
+
+                // Contagem 2
+                setTimeout(() => {
+                    countdownElement.textContent = '2';
+                }, 1000);
+
+                // Contagem 1
+                setTimeout(() => {
+                    countdownElement.textContent = '1';
+                }, 2000);
+
+                // Revela a surpresa após 3 segundos
+                setTimeout(() => {
+                    countdownElement.style.display = 'none'; // Esconde a contagem
+                    firstScreen.style.display = 'none'; // Garante que a tela do botão suma
+                    surprise.style.display = 'flex'; // Mostra a surpresa
+                }, 3000);
+
+                firstButton.disabled = true; // Impede cliques posteriores
+
             } else {
                 // Move para o próximo alvo
                 clickIndex++;
@@ -145,17 +165,10 @@
             }
         });
 
-        // O botão não precisa fugir com mouseover.
-
-        // Inicia o jogo posicionando o botão no primeiro alvo
-        // Usamos um pequeno atraso para garantir que a página carregue primeiro
         window.addEventListener('load', () => {
             moveToNextTarget();
         });
         
-        // Se a função window.addEventListener não funcionar, descomente a linha abaixo e comente o bloco acima:
-        // moveToNextTarget(); 
-
     </script>
 
 </body>
