@@ -40,13 +40,12 @@
         }
 
         #surprise {
-            display: none; 
+            display: none; /* Começa escondido */
             max-width: 90%;
             background-color: rgba(255, 255, 255, 0.9);
             padding: 20px;
             border-radius: 20px;
             position: relative;
-            /* REMOÇÃO DE MARGIN: AUTO para centralizar melhor com o flex do body */
             
             /* Garante que o conteúdo DENTRO da surpresa seja centralizado */
             flex-direction: column; 
@@ -85,7 +84,7 @@
     </div>
 
     <script>
-        // Referências para os elementos
+        // CORREÇÃO CRÍTICA: Define as referências para os elementos
         const firstScreen = document.getElementById('firstScreen'); 
         const firstButton = document.getElementById('firstButton');
         const surprise = document.getElementById('surprise');
@@ -114,10 +113,8 @@
                     setTimeout(moveButtonRandom, Math.random() * 100);
                 }
             } else {
-                // CORREÇÃO DE CENTRALIZAÇÃO: Esconde a tela inteira do botão
+                // REVELAÇÃO: Esconde a tela inteira do botão e revela a surpresa centralizada
                 firstScreen.style.display = 'none'; 
-                
-                // CORREÇÃO DE CENTRALIZAÇÃO: Revela a surpresa usando display: flex
                 surprise.style.display = 'flex'; 
             }
         });
