@@ -45,14 +45,14 @@
             background-color: #ffffff;
             border-radius: 20px;
             border: 3px solid #c0392b;
-            overflow: visible; /* IMPORTANTE: Mantém o overflow: visible para os corações subirem para fora da barra */
+            overflow: visible; 
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            position: relative; /* CRÍTICO: Posição de referência para os corações */
+            position: relative; 
         }
 
         #loveBar {
             height: 100%;
-            width: 0%; 
+            width: 0%;
             background-color: #ff4d4d;
             transition: width 0.1s linear;
             display: flex;
@@ -63,18 +63,17 @@
             font-weight: bold;
         }
 
-        /* --- NOVO ESTILO: CORAÇÃO VOADOR --- */
+        /* --- ESTILOS DO CORAÇÃO VOADOR --- */
         .heart {
             position: absolute;
-            bottom: 0; /* Começa na base da LoveBar */
+            bottom: 0; 
             font-size: 20px;
             color: #ff4d4d; 
-            pointer-events: none; /* Não interfere no clique */
-            transform: translateX(-50%); /* Centraliza o coração em seu ponto X */
-            animation: flyUp 1.5s ease-out forwards; /* Define a animação de voo */
+            pointer-events: none; 
+            transform: translateX(-50%); 
+            animation: flyUp 1.5s ease-out forwards; 
         }
 
-        /* Define como o coração se move e desaparece */
         @keyframes flyUp {
             0% {
                 opacity: 1;
@@ -82,12 +81,12 @@
             }
             100% {
                 opacity: 0;
-                transform: translateY(-150px) scale(1.5) translateX(-50%); /* Move para cima 150px e cresce */
+                transform: translateY(-150px) scale(1.5) translateX(-50%);
             }
         }
         /* -------------------------------------- */
 
-        /* --- ESTILOS DA CONTAGEM REGRESSIVA (SEM ALTERAÇÃO) --- */
+        /* --- ESTILOS DA CONTAGEM REGRESSIVA --- */
         #countdown {
             display: none;
             font-size: 100px;
@@ -98,7 +97,7 @@
             z-index: 20;
         }
 
-        /* --- ESTILOS DA SURPRESA (MURAL DE FOTOS - SEM ALTERAÇÃO) --- */
+        /* --- ESTILOS DA SURPRESA (MURAL DE FOTOS - AJUSTADO) --- */
         #surprise {
             visibility: hidden;
             opacity: 0;
@@ -122,13 +121,35 @@
             margin-top: 15px;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-            gap: 25px; 
+            gap: 40px; /* AUMENTO DO ESPAÇAMENTO ENTRE AS FOTOS */
             justify-items: center;
             align-items: start;
             padding-bottom: 20px;
         }
         
-        #photo-grid img {
+        /* Contêiner individual de cada foto para posicionar o prego */
+        .photo-item {
+            position: relative; /* CRÍTICO: Ponto de referência para o prego */
+            width: 100%; /* Ocupa o espaço da grid */
+        }
+        
+        /* Estilo do preguinho usando pseudoelemento */
+        .photo-item::before {
+            content: ''; /* Conteúdo vazio para o prego */
+            position: absolute;
+            top: -10px; /* Posição acima da foto */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 15px; 
+            height: 15px;
+            background-color: #333; /* Cor do prego/percevejo */
+            border-radius: 50%; /* Formato circular */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4); /* Sombra para dar profundidade */
+            z-index: 10;
+        }
+
+        /* Estilo da imagem dentro do item */
+        .photo-item img {
             width: 100%; 
             height: auto;
             background-color: white; 
@@ -140,7 +161,7 @@
             transition: transform 0.3s;
         }
         
-        #photo-grid img:hover {
+        .photo-item img:hover {
             transform: rotate(-2deg) scale(1.05);
             z-index: 100;
         }
@@ -174,17 +195,20 @@
     <div id="countdown"></div>
 
     <div id="surprise"> 
+        
         <h1>Para Lívia Rodrigues ❤️</h1>
         <p>
             Meu amor, você é uma mulher incrível e eu sou seu fã. Te amo meu amor e obrigado por fazer minha vida ter mais sentido.
         </p>
+
         <div id="photo-grid">
-            <img src="foto.jpg" alt="Foto 1">
-            <img src="foto2.jpg" alt="Foto 2">
-            <img src="foto3.jpg" alt="Foto 3">
-            <img src="foto4.jpg" alt="Foto 4">
-            <img src="foto5.jpg" alt="Foto 5">
-        </div>
+            <div class="photo-item"><img src="foto.jpg" alt="Foto 1"></div>
+            <div class="photo-item"><img src="foto2.jpg" alt="Foto 2"></div>
+            <div class="photo-item"><img src="foto3.jpg" alt="Foto 3"></div>
+            <div class="photo-item"><img src="foto4.jpg" alt="Foto 4"></div>
+            <div class="photo-item"><img src="foto5.jpg" alt="Foto 5"></div>
+            </div>
+        
     </div>
 
     <script>
@@ -192,25 +216,22 @@
         const surprise = document.getElementById('surprise');
         const countdownElement = document.getElementById('countdown');
         const loveBar = document.getElementById('loveBar');
-        const loveBarContainer = document.getElementById('loveBarContainer'); // Referência para injetar os corações
+        const loveBarContainer = document.getElementById('loveBarContainer');
 
         let loveLevel = 0; 
         const maxLove = 20; 
         let gameActive = true; 
 
-        // NOVO: Função para criar e animar o coração
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
             heart.textContent = '❤️';
             
-            // Posição aleatória ao longo da barra (5% a 95% da largura)
             const randomX = Math.random() * 90 + 5; 
             heart.style.left = randomX + '%';
 
             loveBarContainer.appendChild(heart);
             
-            // Remove o coração do DOM após a animação (1.5 segundos, conforme o CSS)
             setTimeout(() => {
                 heart.remove();
             }, 1500); 
@@ -224,11 +245,9 @@
                     loveLevel++;
                     const percentage = Math.round((loveLevel / maxLove) * 100);
                     
-                    // Atualiza a barra visual
                     loveBar.style.width = percentage + '%';
                     loveBar.textContent = percentage + '%';
 
-                    // NOVO: Chama a função do coração a cada clique
                     createHeart(); 
                 }
 
@@ -258,6 +277,13 @@
                 surprise.style.opacity = '1';         
             }, 3000);
         }
+
+        // Se você quiser que cada foto tenha uma rotação ligeiramente diferente (opcional)
+        document.querySelectorAll('.photo-item img').forEach(img => {
+            const randomRotation = Math.random() * 8 - 4; // Entre -4 e +4 graus
+            img.style.transform = `rotate(${randomRotation}deg)`;
+        });
+
     </script>
 
 </body>
