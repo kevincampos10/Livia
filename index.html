@@ -14,12 +14,10 @@
             display: flex; 
             justify-content: center;
             align-items: center;
-            /* Garante que o body não está escondendo nada */
         }
 
-        /* NOVO ESTILO: Contêiner para isolar a tela de alvos */
+        /* --- ESTILOS DA TELA INICIAL --- */
         #firstScreen {
-            /* Garante que o contêiner do botão ocupa toda a tela */
             position: absolute; 
             top: 0;
             left: 0;
@@ -28,7 +26,6 @@
             z-index: 10;
         }
 
-        /* --- ESTILOS DO BOTÃO --- */
         #firstButton {
             padding: 15px 30px;
             font-size: 20px;
@@ -50,7 +47,7 @@
 
         /* --- ESTILOS DA CONTAGEM REGRESSIVA --- */
         #countdown {
-            display: none; 
+            display: none;
             font-size: 100px;
             color: #ffffff;
             font-weight: bold;
@@ -59,20 +56,25 @@
             z-index: 20;
         }
 
-        /* --- ESTILOS DA SURPRESA (MURAL DE FOTOS) --- */
+        /* --- ESTILOS DA SURPRESA (MURAL DE FOTOS - CORREÇÃO DE OCULTAÇÃO) --- */
         #surprise {
-            display: none; /* CORREÇÃO CRÍTICA: Deve começar escondido */
+            /* CORREÇÃO: Usamos visibility/opacity para garantir que ela não seja renderizada no início */
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.5s; /* Adiciona uma transição suave ao aparecer */
+            
+            position: absolute; /* Ocupa a área central do body */
             max-width: 95%; 
             max-height: 95vh;
             background-color: rgba(255, 255, 255, 0.9);
             padding: 20px;
             border-radius: 20px;
-            position: relative;
             overflow-y: auto; 
-            z-index: 5; /* Garante que fique atrás do #firstScreen */
+            z-index: 5; 
             
+            /* CSS para o Mural: Fotos em colunas */
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Reduz o minmax para caber mais fotos */
             gap: 10px; 
             justify-items: center;
             align-items: start;
@@ -177,12 +179,14 @@
                     countdownElement.textContent = '1';
                 }, 2000);
 
-                // REVELAÇÃO DA SURPRESA
+                // REVELAÇÃO DA SURPRESA: Ativa a visibilidade e a opacidade
                 setTimeout(() => {
                     countdownElement.style.display = 'none';
                     firstScreen.style.display = 'none';
-                    // Garante que a surpresa apareça corretamente
-                    surprise.style.display = 'grid'; 
+                    
+                    surprise.style.visibility = 'visible'; // Torna visível
+                    surprise.style.opacity = '1';         // Transiciona para totalmente opaco
+                    // O display: grid já está aplicado no CSS.
                 }, 3000);
 
                 firstButton.disabled = true;
