@@ -19,6 +19,8 @@
 
         .container {
             text-align: center;
+            /* Garantimos que esta div fique na frente de tudo que for absoluto */
+            z-index: 10; 
         }
 
         button {
@@ -84,7 +86,7 @@
     </div>
 
     <script>
-        // CORREÇÃO CRÍTICA: Define as referências para os elementos
+        // Define as referências para os elementos
         const firstScreen = document.getElementById('firstScreen'); 
         const firstButton = document.getElementById('firstButton');
         const surprise = document.getElementById('surprise');
@@ -113,7 +115,7 @@
                     setTimeout(moveButtonRandom, Math.random() * 100);
                 }
             } else {
-                // REVELAÇÃO: Esconde a tela inteira do botão e revela a surpresa centralizada
+                // AÇÃO FINAL: Esconde a tela inteira do botão e revela a surpresa centralizada
                 firstScreen.style.display = 'none'; 
                 surprise.style.display = 'flex'; 
             }
