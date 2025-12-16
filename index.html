@@ -11,7 +11,7 @@
             font-family: 'Arial', sans-serif;
             background-color: #f28b8b;
             height: 100vh;
-            display: flex; /* Centraliza TUDO na tela */
+            display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
@@ -32,9 +32,12 @@
             background-color: #ffffff;
             color: #c0392b;
             font-weight: bold;
-            transition: transform 0.1s, background-color 0.2s;
-            /* AJUSTE: Voltamos para position: absolute para que ele possa fugir */
+            transition: transform 0.2s; /* Transição suave para a nova posição */
+            /* Precisa ser absolute para ser movido para as posições programadas */
             position: absolute; 
+            
+            /* DICA: Adicionar um box-shadow pode ajudar a ver melhor o botão */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
         }
 
         #firstButton:hover {
@@ -64,13 +67,11 @@
 
         h1 {
             color: #c0392b;
-            /* Tamanho final do título */
             font-size: 36px; 
         }
 
         p {
             color: #555;
-            /* Tamanho final do parágrafo */
             font-size: 22px; 
             text-align: center;
             line-height: 1.5;
@@ -92,41 +93,69 @@
     </div>
 
     <script>
-        // Restaura o contador de cliques
         const firstScreen = document.getElementById('firstScreen'); 
         const firstButton = document.getElementById('firstButton');
         const surprise = document.getElementById('surprise');
-        let clicks = 0; // Restaurado
+        let clickIndex = 0; // Contador de cliques que também serve como índice da posição
 
-        function moveButtonRandom() {
-            const x = Math.random() * (window.innerWidth - firstButton.offsetWidth);
-            const y = Math.random() * (window.innerHeight - firstButton.offsetHeight);
-            firstButton.style.left = x + 'px';
-            firstButton.style.top = y + 'px';
+        // 1. DEFINIÇÃO DOS 5 ALVOS (X e Y em porcentagem da tela)
+        // Você pode ajustar estes valores (0 a 100) para escolher onde o botão vai aparecer.
+        // O último ponto será o que revela a surpresa.
+        const targetPositions = [
+            // Posição 1: Topo Esquerda (20% de cada lado)
+            { x: 20, y: 20 },
+            // Posição 2: Meio Direita (75% da largura, 40% da altura)
+            { x: 75, y: 40 }, 
+            // Posição 3: Centro-Centro (50% da largura, 50% da altura)
+            { x: 50, y: 50 }, 
+            // Posição 4: Baixo Esquerda (30% da largura, 80% da altura)
+            { x: 30, y: 80 }, 
+            // Posição 5 (Final): Topo Direita (80% da largura, 15% da altura)
+            { x: 80, y: 15 }  
+        ];
+
+        // Função para mover o botão para a próxima posição na lista
+        function moveToNextTarget() {
+            if (clickIndex < targetPositions.length) {
+                const target = targetPositions[clickIndex];
+                
+                // Mapeia porcentagem para pixels da janela
+                const newX = (window.innerWidth * target.x / 100) - (firstButton.offsetWidth / 2);
+                const newY = (window.innerHeight * target.y / 100) - (firstButton.offsetHeight / 2);
+
+                firstButton.style.left = newX + 'px';
+                firstButton.style.top = newY + 'px';
+            }
         }
 
-        // AJUSTE: Restaura a função de fugir ao passar o mouse
-        firstButton.addEventListener('mouseover', () => {
-            moveButtonRandom();
-        });
-
-        // AJUSTE: Restaura a lógica de 5 cliques
+        // Lógica de contagem e revelação da surpresa
         firstButton.addEventListener('click', () => {
-            clicks++;
-            if (clicks < 5) {
-                // Move o botão rapidamente mais 3 vezes para dificultar
-                for (let i = 0; i < 3; i++) {
-                    setTimeout(moveButtonRandom, Math.random() * 100);
-                }
-            } else {
+            
+            // Se o clique atual é o último (o que abre a surpresa)
+            if (clickIndex === targetPositions.length - 1) {
                 // Revela a surpresa
                 firstScreen.style.display = 'none'; 
                 surprise.style.display = 'flex'; 
+                // Impede cliques posteriores
+                firstButton.disabled = true; 
+            } else {
+                // Move para o próximo alvo
+                clickIndex++;
+                moveToNextTarget();
             }
         });
 
-        // Posiciona o botão no início
-        moveButtonRandom(); 
+        // O botão não precisa fugir com mouseover.
+
+        // Inicia o jogo posicionando o botão no primeiro alvo
+        // Usamos um pequeno atraso para garantir que a página carregue primeiro
+        window.addEventListener('load', () => {
+            moveToNextTarget();
+        });
+        
+        // Se a função window.addEventListener não funcionar, descomente a linha abaixo e comente o bloco acima:
+        // moveToNextTarget(); 
+
     </script>
 
 </body>
