@@ -9,13 +9,11 @@
             margin: 0;
             padding: 0;
             font-family: 'Arial', sans-serif;
-            /* Fundo degradê */
             background: linear-gradient(to top, #ff9a9e 0%, #fecfef 100%); 
             height: 100vh;
             display: flex; 
             justify-content: center;
             align-items: center;
-            /* CORREÇÃO: Removemos 'overflow: hidden' para permitir a barra de rolagem */
         }
 
         .container {
@@ -23,7 +21,7 @@
             z-index: 10; 
         }
 
-        /* --- ESTILOS DO BOTÃO --- */
+        /* --- ESTILOS DO BOTÃO E CONTAGEM (SEM ALTERAÇÃO) --- */
         #firstButton {
             padding: 15px 30px;
             font-size: 20px;
@@ -43,7 +41,6 @@
             background-color: #ffe6e6;
         }
 
-        /* --- ESTILOS DA CONTAGEM REGRESSIVA --- */
         #countdown {
             display: none;
             font-size: 100px;
@@ -54,29 +51,44 @@
             z-index: 20;
         }
 
-        /* --- ESTILOS DA SURPRESA --- */
+        /* --- ESTILOS DA SURPRESA (NOVO LAYOUT PARA FOTOS) --- */
         #surprise {
             display: none; 
-            max-width: 90%;
+            max-width: 95%; /* Aumenta um pouco para caber mais fotos */
+            max-height: 95vh;
             background-color: rgba(255, 255, 255, 0.9);
             padding: 20px;
             border-radius: 20px;
             position: relative;
+            overflow-y: auto; /* Permite rolar se as fotos forem muitas */
             
-            flex-direction: column; 
-            justify-content: center;
-            align-items: center;
+            /* NOVO CSS: Usamos GRID para criar o mural */
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* 150px é o tamanho mínimo de cada foto */
+            gap: 10px; /* Espaço entre as fotos */
+            justify-items: center;
+            align-items: start;
         }
 
+        .text-container {
+            /* Ocupa a largura total na grade, centralizado */
+            grid-column: 1 / -1; 
+            text-align: center;
+        }
+        
         #surprise img {
-            max-width: 80%; 
-            border-radius: 15px;
-            margin-bottom: 15px;
+            width: 100%; /* Fotos ocupam 100% da sua célula na grid */
+            height: auto;
+            border-radius: 8px;
+            /* Removemos max-width: 80% para que a grid controle o tamanho */
+            object-fit: cover; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
             color: #c0392b;
             font-size: 36px; 
+            margin-bottom: 5px;
         }
 
         p {
@@ -84,6 +96,7 @@
             font-size: 22px; 
             text-align: center;
             line-height: 1.5;
+            margin-top: 0;
         }
     </style>
 </head>
@@ -96,12 +109,20 @@
     <div id="countdown"></div>
 
     <div class="container" id="surprise">
-        <h1>Para Lívia Rodrigues ❤️</h1>
-        <img src="foto.jpg" alt="Nossa foto">
-        <p>
-            Meu amor, você é uma mulher incrível e eu sou seu fã. Te amo meu amor e obrigado por fazer minha vida ter mais sentido.
-        </p>
-    </div>
+        
+        <div class="text-container">
+            <h1>Para Lívia Rodrigues ❤️</h1>
+            <p>
+                Meu amor, você é uma mulher incrível e eu sou seu fã. Te amo meu amor e obrigado por fazer minha vida ter mais sentido.
+            </p>
+        </div>
+
+        <img src="foto.jpg" alt="Foto 1">
+        <img src="foto2.jpg" alt="Foto 2">
+        <img src="foto3.jpg" alt="Foto 3">
+        <img src="foto4.jpg" alt="Foto 4">
+        <img src="foto5.jpg" alt="Foto 5">
+        </div>
 
     <script>
         const firstScreen = document.getElementById('firstScreen'); 
@@ -151,7 +172,8 @@
                 setTimeout(() => {
                     countdownElement.style.display = 'none';
                     firstScreen.style.display = 'none';
-                    surprise.style.display = 'flex';
+                    // AJUSTE: O display: grid é definido no CSS.
+                    surprise.style.display = 'grid'; 
                 }, 3000);
 
                 firstButton.disabled = true;
