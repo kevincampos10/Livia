@@ -33,7 +33,8 @@
             color: #c0392b;
             font-weight: bold;
             transition: transform 0.1s, background-color 0.2s;
-            position: relative; 
+            /* AJUSTE: Voltamos para position: absolute para que ele possa fugir */
+            position: absolute; 
         }
 
         #firstButton:hover {
@@ -63,13 +64,13 @@
 
         h1 {
             color: #c0392b;
-            /* AJUSTE: Aumenta o título para 36px */
+            /* Tamanho final do título */
             font-size: 36px; 
         }
 
         p {
             color: #555;
-            /* AJUSTE: Aumenta o parágrafo para 22px */
+            /* Tamanho final do parágrafo */
             font-size: 22px; 
             text-align: center;
             line-height: 1.5;
@@ -91,10 +92,12 @@
     </div>
 
     <script>
+        // Restaura o contador de cliques
         const firstScreen = document.getElementById('firstScreen'); 
         const firstButton = document.getElementById('firstButton');
         const surprise = document.getElementById('surprise');
-        
+        let clicks = 0; // Restaurado
+
         function moveButtonRandom() {
             const x = Math.random() * (window.innerWidth - firstButton.offsetWidth);
             const y = Math.random() * (window.innerHeight - firstButton.offsetHeight);
@@ -102,12 +105,27 @@
             firstButton.style.top = y + 'px';
         }
 
-        // Lógica de revelação com 1 clique para teste
-        firstButton.addEventListener('click', () => {
-            firstScreen.style.display = 'none'; 
-            surprise.style.display = 'flex'; 
+        // AJUSTE: Restaura a função de fugir ao passar o mouse
+        firstButton.addEventListener('mouseover', () => {
+            moveButtonRandom();
         });
-        
+
+        // AJUSTE: Restaura a lógica de 5 cliques
+        firstButton.addEventListener('click', () => {
+            clicks++;
+            if (clicks < 5) {
+                // Move o botão rapidamente mais 3 vezes para dificultar
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(moveButtonRandom, Math.random() * 100);
+                }
+            } else {
+                // Revela a surpresa
+                firstScreen.style.display = 'none'; 
+                surprise.style.display = 'flex'; 
+            }
+        });
+
+        // Posiciona o botão no início
         moveButtonRandom(); 
     </script>
 
