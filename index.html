@@ -11,7 +11,7 @@
             font-family: 'Arial', sans-serif;
             background-color: #f28b8b;
             height: 100vh;
-            display: flex; /* Mantém o body como contêiner flexível */
+            display: flex; /* Centraliza TUDO na tela */
             justify-content: center;
             align-items: center;
             overflow: hidden;
@@ -40,15 +40,15 @@
         }
 
         #surprise {
-            /* Alterado para 'none' para começar escondido */
             display: none; 
             max-width: 90%;
             background-color: rgba(255, 255, 255, 0.9);
             padding: 20px;
             border-radius: 20px;
             position: relative;
-            margin: auto;
-            /* Garante que a surpresa centralize quando aparecer */
+            /* REMOÇÃO DE MARGIN: AUTO para centralizar melhor com o flex do body */
+            
+            /* Garante que o conteúdo DENTRO da surpresa seja centralizado */
             flex-direction: column; 
             justify-content: center;
             align-items: center;
@@ -86,7 +86,7 @@
 
     <script>
         // Referências para os elementos
-        const firstScreen = document.getElementById('firstScreen'); // Contêiner da primeira tela
+        const firstScreen = document.getElementById('firstScreen'); 
         const firstButton = document.getElementById('firstButton');
         const surprise = document.getElementById('surprise');
         let clicks = 0;
@@ -114,10 +114,10 @@
                     setTimeout(moveButtonRandom, Math.random() * 100);
                 }
             } else {
-                // CORREÇÃO: Esconde o contêiner inteiro do botão
+                // CORREÇÃO DE CENTRALIZAÇÃO: Esconde a tela inteira do botão
                 firstScreen.style.display = 'none'; 
                 
-                // CORREÇÃO: Revela a surpresa usando display: flex
+                // CORREÇÃO DE CENTRALIZAÇÃO: Revela a surpresa usando display: flex
                 surprise.style.display = 'flex'; 
             }
         });
