@@ -21,7 +21,7 @@
             z-index: 10; 
         }
 
-        /* --- ESTILOS DO BOTÃO E CONTAGEM (SEM ALTERAÇÃO) --- */
+        /* --- ESTILOS DO BOTÃO --- */
         #firstButton {
             padding: 15px 30px;
             font-size: 20px;
@@ -41,8 +41,9 @@
             background-color: #ffe6e6;
         }
 
+        /* --- ESTILOS DA CONTAGEM REGRESSIVA --- */
         #countdown {
-            display: none;
+            display: none; /* CORREÇÃO CRÍTICA: Deve começar escondido */
             font-size: 100px;
             color: #ffffff;
             font-weight: bold;
@@ -51,36 +52,34 @@
             z-index: 20;
         }
 
-        /* --- ESTILOS DA SURPRESA (NOVO LAYOUT PARA FOTOS) --- */
+        /* --- ESTILOS DA SURPRESA (MURAL DE FOTOS) --- */
         #surprise {
-            display: none; 
-            max-width: 95%; /* Aumenta um pouco para caber mais fotos */
+            display: none; /* CORREÇÃO CRÍTICA: Deve começar escondido */
+            max-width: 95%; 
             max-height: 95vh;
             background-color: rgba(255, 255, 255, 0.9);
             padding: 20px;
             border-radius: 20px;
             position: relative;
-            overflow-y: auto; /* Permite rolar se as fotos forem muitas */
+            overflow-y: auto; 
             
-            /* NOVO CSS: Usamos GRID para criar o mural */
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* 150px é o tamanho mínimo de cada foto */
-            gap: 10px; /* Espaço entre as fotos */
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
+            gap: 10px; 
             justify-items: center;
             align-items: start;
         }
 
         .text-container {
-            /* Ocupa a largura total na grade, centralizado */
             grid-column: 1 / -1; 
             text-align: center;
+            padding-bottom: 10px;
         }
         
         #surprise img {
-            width: 100%; /* Fotos ocupam 100% da sua célula na grid */
+            width: 100%; 
             height: auto;
             border-radius: 8px;
-            /* Removemos max-width: 80% para que a grid controle o tamanho */
             object-fit: cover; 
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
@@ -122,7 +121,8 @@
         <img src="foto3.jpg" alt="Foto 3">
         <img src="foto4.jpg" alt="Foto 4">
         <img src="foto5.jpg" alt="Foto 5">
-        </div>
+        
+    </div>
 
     <script>
         const firstScreen = document.getElementById('firstScreen'); 
@@ -155,7 +155,7 @@
             
             if (clickIndex === targetPositions.length - 1) {
                 
-                // --- LÓGICA DA CONTAGEM REGRESSIVA ---
+                // Lógica de Transição
                 firstButton.style.display = 'none';
                 
                 countdownElement.style.display = 'flex';
@@ -169,10 +169,10 @@
                     countdownElement.textContent = '1';
                 }, 2000);
 
+                // REVELAÇÃO DA SURPRESA
                 setTimeout(() => {
                     countdownElement.style.display = 'none';
                     firstScreen.style.display = 'none';
-                    // AJUSTE: O display: grid é definido no CSS.
                     surprise.style.display = 'grid'; 
                 }, 3000);
 
